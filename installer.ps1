@@ -25,7 +25,7 @@ If (([Security.Principal.WindowsIdentity]::GetCurrent()).Owner.Value -ne "S-1-5-
 	break
 }
 
-function install_winget
+function install-winget
 {
 	# Get the download URL of the latest winget installer from GitHub:
 	$API_URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
