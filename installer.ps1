@@ -21,7 +21,7 @@ Write-Host "                                                   "
 
 If (([Security.Principal.WindowsIdentity]::GetCurrent()).Owner.Value -ne "S-1-5-32-544")
 {
-    Write-Host "-- Scripts must be ran as Administrator ---" -Foregroundcolor White -BackgroundColor DarkRed
+    Write-Host "-- This script must be ran as Administrator ---" -Foregroundcolor White -BackgroundColor DarkRed
     break
 }
 
