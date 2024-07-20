@@ -11,15 +11,20 @@
 		mtkclient installer for the unfortunate souls
 #>
 #Requires -RunAsAdministrator
-If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]'Administrator'))
+
+Write-Host "---------------------------------------------------" -BackgroundColor Black -ForegroundColor Green
+Write-Host "---             mtkclient-installer             ---" -BackgroundColor Black -ForegroundColor Green
+Write-Host "-- mtkclient installer for the unfortunate souls --" -BackgroundColor Black -ForegroundColor Green
+Write-Host "---  Made by netzsworth - netzsworth.github.io  ---" -BackgroundColor Black -ForegroundColor Green
+Write-Host "---------------------------------------------------" -BackgroundColor Black -ForegroundColor Green
+Write-Host "                                                   "
+
+If (([Security.Principal.WindowsIdentity]::GetCurrent()).Owner.Value -ne "S-1-5-32-544")
 {
-	Write-Host "You didn't run this script as an Administrator. This script will self elevate to run as an Administrator and continue."
-	Start-Sleep 1
-	Write-Host " Launching in Admin mode" -f DarkRed
-	$pwshexe = (Get-Command 'powershell.exe').Source
-	Start-Process $pwshexe -ArgumentList ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $PSCommandPath) -Verb RunAs
-	Exit
+    Write-Host "-- Scripts must be ran as Administrator ---" -Foregroundcolor White -BackgroundColor DarkRed
+    break
 }
+
 function install_winget {
 	# Get the download URL of the latest winget installer from GitHub:
 	$API_URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
@@ -65,7 +70,6 @@ catch
 	$winget = $False
 	if ($choco -eq $false)
 	{
-		Clear-Host
 		Write-Host "Looks like neither Chocolatey or WinGet are not installed, make a selection:" -BackgroundColor DarkRed -ForegroundColor White
 		Write-Host "G: Install WinGet"
 		Write-Host "C: Install Chocolatey"
