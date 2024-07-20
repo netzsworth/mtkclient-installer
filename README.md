@@ -19,4 +19,6 @@ mtkclient-installer must be ran in Admin mode. To achieve this, open PowerShell 
 - Press Win + R, paste this command
 ```powershell "irm https://raw.githubusercontent.com/netzsworth/mtkclient-installer/main/installer.ps1 | iex"```
 - After that, press Ctrl + Shift + Enter to launch it with administrator privileges. 
-
+### Prepackaged Executable:  
+- Go to "Releases" page, download the file for your architecture (listed as 64 for 64-bit, 32 for 32-bit)
+- Run it as an Administrator
