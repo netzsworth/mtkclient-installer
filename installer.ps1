@@ -11,6 +11,15 @@
 		mtkclient installer for the unfortunate souls
 #>
 #Requires -RunAsAdministrator
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]'Administrator'))
+{
+	Write-Host "You didn't run this script as an Administrator. This script will self elevate to run as an Administrator and continue."
+	Start-Sleep 1
+	Write-Host " Launching in Admin mode" -f DarkRed
+	$pwshexe = (Get-Command 'powershell.exe').Source
+	Start-Process $pwshexe -ArgumentList ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $PSCommandPath) -Verb RunAs
+	Exit
+}
 function install_winget {
 	# Get the download URL of the latest winget installer from GitHub:
 	$API_URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
