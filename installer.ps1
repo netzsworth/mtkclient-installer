@@ -21,11 +21,12 @@ Write-Host "                                                   "
 
 If (([Security.Principal.WindowsIdentity]::GetCurrent()).Owner.Value -ne "S-1-5-32-544")
 {
-    Write-Host "-- This script must be ran as Administrator ---" -Foregroundcolor White -BackgroundColor DarkRed
-    break
+	Write-Host "-- This script must be ran as Administrator ---" -Foregroundcolor White -BackgroundColor DarkRed
+	break
 }
 
-function install_winget {
+function install_winget
+{
 	# Get the download URL of the latest winget installer from GitHub:
 	$API_URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
 	$DOWNLOAD_URL = $(Invoke-RestMethod $API_URL).assets.browser_download_url |
@@ -70,7 +71,7 @@ catch
 	$winget = $False
 	if ($choco -eq $false)
 	{
-		Write-Host "Looks like neither Chocolatey or WinGet are not installed, make a selection:" -BackgroundColor DarkRed -ForegroundColor White
+		Write-Host "Looks like neither Chocolatey or WinGet are installed, make a selection:" -BackgroundColor DarkRed -ForegroundColor White
 		Write-Host "G: Install WinGet"
 		Write-Host "C: Install Chocolatey"
 		Write-Host "Any other key: Skip python and git installation (only if you already have it installed)"
@@ -79,17 +80,20 @@ catch
 }
 # Installing Winget or Chocolatey
 
-if ($selection -eq 'g') {install-winget}
-	elseif ($selection -eq 'c') {
-		install-choco
-	}
+if ($selection -eq 'g') { install-winget }
+elseif ($selection -eq 'c')
+{
+	install-choco
+}
 
 # Installing Python
 if ($winget)
 {
 	Write-Host "Installing python..." -ForegroundColor Green
 	winget install --silent --accept-package-agreements --accept-source-agreements Python.Python.3.12 Git.Git
-} elseif ($choco) {
+}
+elseif ($choco)
+{
 	Write-Host "Installing python..." -ForegroundColor Green
 	choco install -y python git
 }
@@ -108,6 +112,11 @@ Write-Host "Installing UsbDk" -BackgroundColor DarkGreen -ForegroundColor White
 Invoke-WebRequest https://github.com/daynix/UsbDk/releases/download/v1.00-22/UsbDk_1.0.22_x64.msi -UseBasicParsing -OutFile usbdk.msi
 Start-Process msiexec "/a usbdk.msi /passive"
 Write-Host "Installed UsbDk" -BackgroundColor DarkGreen -ForegroundColor White
+
+Write-Host "Installing WinFSP" -BackgroundColor DarkGreen -ForegroundColor White
+Invoke-WebRequest https://github.com/winfsp/winfsp/releases/download/v2.0/winfsp-2.0.23075.msi -UseBasicParsing -OutFile winfsp.msi
+Start-Process msiexec "/i winfsp.msi /passive"
+
 # Driver install
 
 $drvchoice = Read-Host "Do you want to install MTK USB drivers? Y/N"
