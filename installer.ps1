@@ -57,6 +57,7 @@ if ((Get-Command -Name choco -ErrorAction Ignore) -and ($chocoVersion = (Get-Ite
 else
 {
 	Write-Host "--- Chocolatey is not installed ---"
+	$choco = $false
 }
 
 # Check if Winget is installed, then proceed
