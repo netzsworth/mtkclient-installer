@@ -67,7 +67,19 @@ try
 {
 	$winget = winget --version
 }
-catch [System.Management.Automation.CommandNotFoundException], [System.Management.Automation.ApplicationFailedException]
+catch [System.Management.Automation.CommandNotFoundException], [System.Management.Automation.ApplicationFailedException] {
+	$winget = $False
+	if ($choco -eq $false)
+	{
+		Write-Host "Looks like neither Chocolatey or WinGet are installed, make a selection:" -BackgroundColor DarkRed -ForegroundColor White
+		Write-Host "G: Install WinGet"
+		Write-Host "C: Install Chocolatey"
+		Write-Host "Any other key: Skip python and git installation (only if you already have it installed)"
+		$selection = Read-Host "Make a selection"
+	}
+}
+
+catch
 {
 	$winget = $False
 	if ($choco -eq $false)
@@ -78,19 +90,8 @@ catch [System.Management.Automation.CommandNotFoundException], [System.Managemen
 		Write-Host "Any other key: Skip python and git installation (only if you already have it installed)"
 		$selection = Read-Host "Make a selection"
 	}
-	catch 
-	{
-		$winget = $False
-		if ($choco -eq $false)
-		{
-			Write-Host "Looks like neither Chocolatey or WinGet are installed, make a selection:" -BackgroundColor DarkRed -ForegroundColor White
-			Write-Host "G: Install WinGet"
-			Write-Host "C: Install Chocolatey"
-			Write-Host "Any other key: Skip python and git installation (only if you already have it installed)"
-			$selection = Read-Host "Make a selection"
-		}
-	}
-	# Installing Winget or Chocolatey
+}
+# Installing Winget or Chocolatey
 
 if ($selection -eq 'g') { install-winget }
 elseif ($selection -eq 'c')
